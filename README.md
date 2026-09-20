@@ -63,11 +63,42 @@ WebSSH 监听：
 127.0.0.1:30000
 ```
 
-### 4. 启动
+### 4. 启动、停止和状态管理
+
+先赋予执行权限：
 
 ```bash
 chmod +x serv00_start.sh
+```
+
+启动：
+
+```bash
+./serv00_start.sh start
+```
+
+直接运行脚本不带参数也等同于 `start`：
+
+```bash
 ./serv00_start.sh
+```
+
+停止：
+
+```bash
+./serv00_start.sh stop
+```
+
+重启：
+
+```bash
+./serv00_start.sh restart
+```
+
+查看状态：
+
+```bash
+./serv00_start.sh status
 ```
 
 启动脚本会：
@@ -76,6 +107,8 @@ chmod +x serv00_start.sh
 - 写入 `webssh.pid`
 - 输出日志到 `webssh.log`
 - 防止重复启动
+- 停止时优先发送 SIGTERM，必要时再发送 SIGKILL
+- 如果 PID 文件丢失，会尝试根据当前项目路径自动查找 WebSSH 进程
 
 ### 5. Serv00 网站反向代理
 
