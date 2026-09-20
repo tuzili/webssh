@@ -1,234 +1,187 @@
-## 我的修改
-增加生成SSH Link功能，方便收藏，下次使用不需要输入密码。
-![image](https://github.com/crazypeace/huashengdun-webssh/assets/665889/123a33bd-9514-46a5-8e64-d7a82b7f6f19)
+# WebSSH · Serv00 专用版
 
-SSH Link 可以带一个命令参数. 登录完成后就执行命令.  
-[![](https://res.cloudinary.com/marcomontalbano/image/upload/v1726912439/video_to_markdown/images/youtube--hCoAy06NA4k-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=hCoAy06NA4k "")
+这是一个精简后的 WebSSH 版本，仅保留 **Serv00 部署所需内容**。
 
-部署到容器的教程:  
-https://zelikk.blogspot.com/2023/10/huashengdun-webssh-codesandbox.html
+核心功能保留：
+- 浏览器 SSH 终端
+- 密码 / 私钥 / 2FA 登录
+- WebSocket 实时终端
+- SSH Link
+- 登录后执行命令
+- UTF-8 默认编码
 
-部署到Hugging Face的教程 / 作者 Xiang xjfkkk  
-https://linux.do/t/topic/135264
+## Serv00 部署
 
-部署到 Serv00 教程 / 作者 Xiang xjfkkk  
-https://linux.do/t/topic/211113
+WebSSH 使用 Tornado + WebSocket，因此在 Serv00 上建议采用：
 
+**WebSSH → 本机保留端口 → Serv00 Proxy 网站**
 
-<details>
-    <summary>原项目readme (点击展开)</summary>
-  
-## WebSSH
+Serv00 官方文档说明 Proxy 页面支持 WebSocket；端口需要先预留。 citeturn6search0turn6search4
 
-[![python](https://github.com/huashengdun/webssh/actions/workflows/python.yml/badge.svg)](https://github.com/huashengdun/webssh/actions/workflows/python.yml)
-[![codecov](https://raw.githubusercontent.com/huashengdun/webssh/coverage-badge/coverage.svg)](https://raw.githubusercontent.com/huashengdun/webssh/coverage-badge/coverage.svg)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/webssh.svg)
-![PyPI](https://img.shields.io/pypi/v/webssh.svg)
+### 1. 开启 Binexec
 
-
-### Introduction
-
-A simple web application to be used as an ssh client to connect to your ssh servers. It is written in Python, base on tornado, paramiko and xterm.js.
-
-### Features
-
-* SSH password authentication supported, including empty password.
-* SSH public-key authentication supported, including DSA RSA ECDSA Ed25519 keys.
-* Encrypted keys supported.
-* Two-Factor Authentication (time-based one-time password) supported.
-* Fullscreen terminal supported.
-* Terminal window resizable.
-* Auto detect the ssh server's default encoding.
-* Modern browsers including Chrome, Firefox, Safari, Edge, Opera supported.
-
-
-### Preview
-
-![Login](preview/login.png)
-![Terminal](preview/terminal.png)
-
-
-### How it works
-```
-+---------+     http     +--------+    ssh    +-----------+
-| browser | <==========> | webssh | <=======> | ssh server|
-+---------+   websocket  +--------+    ssh    +-----------+
-```
-
-### Requirements
-
-* Python 3.8+
-
-
-### Quickstart
-
-1. Install this app, run command `pip install webssh`
-2. Start a webserver, run command `wssh`
-3. Open your browser, navigate to `127.0.0.1:8888`
-4. Input your data, submit the form.
-
-
-### Server options
+SSH 登录 Serv00 后执行：
 
 ```bash
-# start a http server with specified listen address and listen port
-wssh --address='2.2.2.2' --port=8000
-
-# start a https server, certfile and keyfile must be passed
-wssh --certfile='/path/to/cert.crt' --keyfile='/path/to/cert.key'
-
-# missing host key policy
-wssh --policy=reject
-
-# logging level
-wssh --logging=debug
-
-# log to file
-wssh --log-file-prefix=main.log
-
-# more options
-wssh --help
+devil binexec on
 ```
 
-### Browser console
+执行后重新登录 SSH。 citeturn15search9
 
-```javascript
-// connect to your ssh server
-wssh.connect(hostname, port, username, password, privatekey, passphrase, totp);
+### 2. 预留 TCP 端口
 
-// pass an object to wssh.connect
-var opts = {
-  hostname: 'hostname',
-  port: 'port',
-  username: 'username',
-  password: 'password',
-  privatekey: 'the private key text',
-  passphrase: 'passphrase',
-  totp: 'totp'
-};
-wssh.connect(opts);
-
-// without an argument, wssh will use the form data to connect
-wssh.connect();
-
-// set a new encoding for client to use
-wssh.set_encoding(encoding);
-
-// reset encoding to use the default one
-wssh.reset_encoding();
-
-// send a command to the server
-wssh.send('ls -l');
-```
-
-### Custom Font
-
-To use custom font, put your font file in the directory `webssh/static/css/fonts/` and restart the server.
-
-### URL Arguments
-
-Support passing arguments by url (query or fragment) like following examples:
-
-Passing form data (password must be encoded in base64, privatekey not supported)
-```bash
-http://localhost:8888/?hostname=xx&username=yy&password=str_base64_encoded
-```
-
-Passing a terminal background color
-```bash
-http://localhost:8888/#bgcolor=green
-```
-
-Passing a terminal font color
-```bash
-http://localhost:8888/#fontcolor=red
-```
-
-Passing a user defined title
-```bash
-http://localhost:8888/?title=my-ssh-server
-```
-
-Passing an encoding
-```bash
-http://localhost:8888/#encoding=gbk
-```
-
-Passing a font size
-```bash
-http://localhost:8888/#fontsize=24
-```
-
-Passing a command executed right after login
-```bash
-http://localhost:8888/?command=pwd
-```
-
-Passing a terminal type
-```bash
-http://localhost:8888/?term=xterm-256color
-```
-
-### Use Docker
-
-Start up the app
-```
-docker-compose up
-```
-
-Tear down the app
-```
-docker-compose down
-```
-
-### Tests
-
-Requirements
-```
-pip install pytest pytest-cov codecov flake8 mock
-```
-
-Use unittest to run all tests
-```
-python -m unittest discover tests
-```
-
-Use pytest to run all tests
-```
-python -m pytest tests
-```
-
-### Deployment
-
-Running behind an Nginx server
+例如使用 `30000`：
 
 ```bash
-wssh --address='127.0.0.1' --port=8888 --policy=reject
-```
-```nginx
-# Nginx config example
-location / {
-    proxy_pass http://127.0.0.1:8888;
-    proxy_http_version 1.1;
-    proxy_read_timeout 300;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_set_header Host $http_host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Real-PORT $remote_port;
-}
+devil port add 30000 TCP webssh
+devil port list
 ```
 
-Running as a standalone server
+Serv00 当前允许预留的端口范围为 1024–64000。 citeturn6search0
+
+### 3. 创建 Python 虚拟环境
+
 ```bash
-wssh --port=8080 --sslport=4433 --certfile='cert.crt' --keyfile='cert.key' --xheaders=False --policy=reject
+virtualenv -p python3.10 ~/webssh-env
+source ~/webssh-env/bin/activate
+cd ~/webssh
+pip install -r requirements.txt
 ```
 
+Serv00 当前提供 Python 3.10，并支持通过 virtualenv 安装独立依赖。 citeturn0search1
 
-### Tips
+### 4. 启动 WebSSH
 
-* For whatever deployment choice you choose, don't forget to enable SSL.
-* By default plain http requests from a public network will be either redirected or blocked and being redirected takes precedence over being blocked.
-* Try to use reject policy as the missing host key policy along with your verified known_hosts, this will prevent man-in-the-middle attacks. The idea is that it checks the system host keys file("~/.ssh/known_hosts") and the application host keys file("./known_hosts") in order, if the ssh server's hostname is not found or the key is not matched, the connection will be aborted.
+把下面的 `30000` 改成你实际预留的端口：
 
-</details>
+```bash
+cd ~/webssh
+source ~/webssh-env/bin/activate
+
+python run.py \
+  --address=127.0.0.1 \
+  --port=30000 \
+  --xheaders=True \
+  --policy=warning \
+  --wpintvl=30
+```
+
+如果需要后台运行：
+
+```bash
+nohup ~/webssh-env/bin/python ~/webssh/run.py \
+  --address=127.0.0.1 \
+  --port=30000 \
+  --xheaders=True \
+  --policy=warning \
+  --wpintvl=30 \
+  > ~/webssh.log 2>&1 &
+```
+
+### 5. 添加 Serv00 Proxy
+
+在 DevilWEB：
+
+**WWW Websites → Add → Advanced settings → Proxy**
+
+将 Proxy 指向：
+
+```
+localhost:30000
+```
+
+也可以使用命令：
+
+```bash
+devil www add YOUR-DOMAIN proxy localhost 30000
+```
+
+Serv00 的 Proxy 页面支持 WebSocket，因此适合 WebSSH 的终端连接。 citeturn6search4
+
+### 6. HTTPS
+
+建议给域名启用 SSL / 强制 HTTPS。
+
+浏览器访问：
+
+```
+https://YOUR-DOMAIN/
+```
+
+### 7. 设置开机自动启动
+
+Serv00 支持 Cron 的 `@reboot`：
+
+```bash
+crontab -e
+```
+
+加入：
+
+```cron
+@reboot /usr/local/bin/bash /home/YOUR-LOGIN/webssh/serv00_start.sh >> /home/YOUR-LOGIN/webssh/serv00.log 2>&1
+```
+
+Serv00 官方 Cron 文档确认支持 `@reboot`。 citeturn15search0
+
+## 使用启动脚本
+
+本仓库提供：
+
+```
+serv00_start.sh
+```
+
+首次使用前修改脚本顶部的：
+
+```bash
+PORT="30000"
+```
+
+然后：
+
+```bash
+chmod +x serv00_start.sh
+./serv00_start.sh
+```
+
+## SSH Link
+
+页面中的 **SSH Link** 可以生成带有：
+
+- SSH 主机
+- SSH 端口
+- 用户名
+- Base64 密码
+- 登录后执行命令
+
+的链接，方便保存到浏览器书签。
+
+**注意：SSH Link 本身包含登录密码信息，不要公开分享。**
+
+## 项目结构
+
+精简后主要保留：
+
+```
+webssh/
+├── webssh/              # WebSSH 核心程序
+├── requirements.txt     # Python 依赖
+├── run.py               # 启动入口
+├── serv00_start.sh      # Serv00 启动脚本
+├── README.md            # Serv00 部署说明
+├── LICENSE
+└── .gitignore
+```
+
+不会保留 Docker、docker-compose、测试、预览图片、油猴脚本及其它平台部署文件。
+
+## 日志
+
+后台运行时查看：
+
+```bash
+tail -f ~/webssh.log
+```
+
+Serv00 网站本身的错误日志位于对应域名的 `logs/error.log`。 citeturn0search1
