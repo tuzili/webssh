@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8">
-    <title> WebSSH </title>
+    <title>WebSSH 远程终端</title>
     <link href="static/img/favicon.png" rel="icon" type="image/png">
     <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="static/css/xterm.min.css" rel="stylesheet" type="text/css"/>
@@ -37,63 +37,63 @@
     </style>
   </head>
   <body>
-    <div id="waiter" style="display: none"> Connecting ... </div>
+    <div id="waiter" style="display: none"> 正在连接服务器…… </div>
 
     <div class="container form-container" style="display: none">
       <form id="connect" action="" method="post" enctype="multipart/form-data"{% if debug %} novalidate{% end %}>
         <div class="row">
           <div class="col">
-            <label for="Hostname">Hostname</label>
+            <label for="服务器地址">Hostname</label>
             <input class="form-control" type="text" id="hostname" name="hostname" value="" required>
           </div>
           <div class="col">
-            <label for="Port">Port</label>
+            <label for="端口">Port</label>
             <input class="form-control" type="number" id="port" name="port" placeholder="22" value="" min=1 max=65535>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <label for="Username">Username</label>
+            <label for="用户名">Username</label>
             <input class="form-control" type="text" id="username" name="username" placeholder="root" value="" required>
           </div>
           <div class="col">
-            <label for="Password">Password</label>
+            <label for="密码">Password</label>
             <input class="form-control" type="password" id="password" name="password" value="">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <label for="Username">Private Key</label>
+            <label for="Username">私钥</label>
             <input class="form-control" type="file" id="privatekey" name="privatekey" value="">
           </div>
           <div class="col">
-            <label for="Passphrase">Passphrase</label>
+            <label for="私钥口令">Passphrase</label>
             <input class="form-control" type="password" id="passphrase" name="passphrase" value="">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <label for="totp">Totp (time-based one-time password)</label>
+            <label for="totp">双因素验证码（TOTP）</label>
             <input class="form-control" type="password" id="totp" name="totp" value="">
           </div>
           <div class="col">
-            <label for="InitCmd">Init Command (execute the command after login)</label>
+            <label for="InitCmd">登录后执行命令</label>
             <input class="form-control" type="text" id="initcmd" name="initcmd" value="">
           </div>
         </div>
         <input type="hidden" id="term" name="term" value="xterm-256color">
         {% module xsrf_form_html() %}
-        <button type="submit" class="btn btn-primary">Connect</button>
-        <button type="reset" class="btn btn-danger">Reset</button>
-        <button type="button" class="btn btn-info" id="sshlinkBtn">SSH Link</button>
+        <button type="submit" class="btn btn-primary">连接服务器</button>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="button" class="btn btn-info" id="sshlinkBtn">SSH 连接链接</button>
         <div id="sshlink"></div>
-        <div>Github: <a href="https://github.com/crazypeace/huashengdun-webssh">https://github.com/crazypeace/huashengdun-webssh</a></div>
-        <div>自建教程: <a href="https://zelikk.blogspot.com/search/label/webssh">https://zelikk.blogspot.com/search/label/webssh</a></div>
+        <div>项目地址： <a href="https://github.com/crazypeace/huashengdun-webssh">https://github.com/crazypeace/huashengdun-webssh</a></div>
+        <div>部署教程： <a href="https://zelikk.blogspot.com/search/label/webssh">https://zelikk.blogspot.com/search/label/webssh</a></div>
       </form>
     </div>
 
     <div class="container">
-      <div id="status" style="color: red;"></div>
+      <div id="status" style="color: red;" aria-live="polite"></div>
       <div id="terminal"></div>
     </div>
 
