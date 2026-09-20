@@ -78,7 +78,7 @@ jQuery(function($){
       CONNECTING = 1,
       CONNECTED = 2,
       state = DISCONNECTED,
-      messages = {1: 'This client is connecting ...', 2: 'This client is already connnected.'},
+      messages = {1: '正在连接服务器……', 2: '服务器已经连接。'},
       key_max_size = 16384,
       fields = ['hostname', 'port', 'username'],
       form_keys = fields.concat(['password', 'totp']),
@@ -230,7 +230,7 @@ jQuery(function($){
 
   function custom_font_is_loaded() {
     if (!custom_font) {
-      console.log('No custom font specified.');
+      console.log('未指定自定义字体。');
     } else {
       console.log('Status of custom font ' + custom_font.family + ': ' + custom_font.status);
       if (custom_font.status === 'loaded') {
@@ -244,7 +244,7 @@ jQuery(function($){
 
   function update_font_family(term) {
     if (term.font_family_updated) {
-      console.log('Already using custom font family');
+      console.log('已经在使用自定义字体');
       return;
     }
 
@@ -256,21 +256,21 @@ jQuery(function($){
       var new_fonts =  custom_font.family + ', ' + default_fonts;
       term.setOption('fontFamily', new_fonts);
       term.font_family_updated = true;
-      console.log('Using custom font family ' + new_fonts);
+      console.log('正在使用自定义字体 ' + new_fonts);
     }
   }
 
 
   function reset_font_family(term) {
     if (!term.font_family_updated) {
-      console.log('Already using default font family');
+      console.log('已经在使用默认字体');
       return;
     }
 
     if (default_fonts) {
       term.setOption('fontFamily',  default_fonts);
       term.font_family_updated = false;
-      console.log('Using default font family ' + default_fonts);
+      console.log('正在使用默认字体 ' + default_fonts);
     }
   }
 
@@ -414,10 +414,10 @@ jQuery(function($){
 
     console.log(url);
     if (!msg.encoding) {
-      console.log('Unable to detect the default encoding of your server');
+      console.log('无法检测服务器的默认字符编码');
       msg.encoding = encoding;
     } else {
-      console.log('The deault encoding of your server is ' + msg.encoding);
+      console.log('服务器的默认字符编码为 ' + msg.encoding);
     }
 
     function term_write(text) {
@@ -433,21 +433,21 @@ jQuery(function($){
     function set_encoding(new_encoding) {
       // for console use
       if (!new_encoding) {
-        console.log('An encoding is required');
+        console.log('需要指定字符编码');
         return;
       }
 
       if (!window.TextDecoder) {
         decoder = new_encoding;
         encoding = decoder;
-        console.log('Set encoding to ' + encoding);
+        console.log('字符编码已设置为 ' + encoding);
       } else {
         try {
           decoder = new window.TextDecoder(new_encoding);
           encoding = decoder.encoding;
-          console.log('Set encoding to ' + encoding);
+          console.log('字符编码已设置为 ' + encoding);
         } catch (RangeError) {
-          console.log('Unknown encoding ' + new_encoding);
+          console.log('未知字符编码 ' + new_encoding);
           return false;
         }
       }
@@ -473,12 +473,12 @@ jQuery(function($){
     wssh.send = function(data) {
       // for console use
       if (!sock) {
-        console.log('Websocket was already closed');
+        console.log('WebSocket 已经关闭');
         return;
       }
 
       if (typeof data !== 'string') {
-        console.log('Only string is allowed');
+        console.log('只允许发送字符串');
         return;
       }
 
@@ -494,7 +494,7 @@ jQuery(function($){
     wssh.reset_encoding = function() {
       // for console use
       if (encoding === msg.encoding) {
-        console.log('Already reset to ' + msg.encoding);
+        console.log('已恢复为 ' + msg.encoding);
       } else {
         set_encoding(msg.encoding);
       }
@@ -503,7 +503,7 @@ jQuery(function($){
     wssh.resize = function(cols, rows) {
       // for console use
       if (term === undefined) {
-        console.log('Terminal was already destroryed');
+        console.log('终端已经销毁');
         return;
       }
 
@@ -517,7 +517,7 @@ jQuery(function($){
       }
 
       if (!valid_args) {
-        console.log('Unable to resize terminal to geometry: ' + format_geometry(cols, rows));
+        console.log('无法将终端调整为此尺寸：' + format_geometry(cols, rows));
       } else {
         term.on_resize(cols, rows);
       }
@@ -541,7 +541,7 @@ jQuery(function($){
 
     term.on_resize = function(cols, rows) {
       if (cols !== this.cols || rows !== this.rows) {
-        console.log('Resizing terminal to geometry: ' + format_geometry(cols, rows));
+        console.log('正在调整终端尺寸：' + format_geometry(cols, rows));
         this.resize(cols, rows);
         sock.send(JSON.stringify({'resize': [cols, rows]}));
       }
@@ -637,10 +637,10 @@ jQuery(function($){
         errors = [], size;
 
     if (!hostname) {
-      errors.push('Value of hostname is required.');
+      errors.push('服务器地址不能为空。');
     } else {
       if (!hostname_tester.test(hostname)) {
-         errors.push('Invalid hostname: ' + hostname);
+         errors.push('服务器地址无效：' + hostname);
       }
     }
 
@@ -648,18 +648,18 @@ jQuery(function($){
       port = 22;
     } else {
       if (!(port > 0 && port <= 65535)) {
-        errors.push('Invalid port: ' + port);
+        errors.push('端口无效：' + port);
       }
     }
 
     if (!username) {
-      errors.push('Value of username is required.');
+      errors.push('用户名不能为空。');
     }
 
     if (pk) {
       size = pk.size || pk.length;
       if (size > key_max_size) {
-        errors.push('Invalid private key: ' + pk.name || '');
+        errors.push('私钥无效：' + pk.name || '');
       }
     }
 
@@ -730,7 +730,7 @@ jQuery(function($){
     if (pk && pk.size && !debug) {
       read_file_as_text(pk, function(text) {
         if (text === undefined) {
-            log_status('Invalid private key: ' + pk.name);
+            log_status('私钥无效：' + pk.name);
         } else {
           ajax_post();
         }
@@ -871,7 +871,7 @@ jQuery(function($){
   }
 
   if (url_form_data.password === null) {
-    log_status('Password via url must be encoded in base64.');
+    log_status('URL 中的密码必须使用 Base64 编码。');
   } else {
     if (get_object_length(url_form_data)) {
       waiter.show();
