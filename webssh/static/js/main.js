@@ -34,7 +34,51 @@ var wssh = {};
   }
 
   document.querySelector('#sshlinkBtn').addEventListener("click", updateSSHlink);
+  document.querySelector('#copySSHlinkBtn').addEventListener("click", copySSHlink);
 }());
+
+function copySSHlink() {
+    var sshlink = document.getElementById("sshlink").textContent.trim();
+
+    if (!sshlink) {
+      return;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(sshlink).then(function() {
+        showCopyResult();
+      }).catch(function() {
+        fallbackCopySSHlink(sshlink);
+      });
+    } else {
+      fallbackCopySSHlink(sshlink);
+    }
+}
+
+function fallbackCopySSHlink(text) {
+    var textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      document.execCommand("copy");
+      showCopyResult();
+    } finally {
+      document.body.removeChild(textarea);
+    }
+}
+
+function showCopyResult() {
+    var button = document.getElementById("copySSHlinkBtn");
+    var originalText = button.textContent;
+    button.textContent = "已复制";
+    setTimeout(function() {
+      button.textContent = originalText;
+    }, 1500);
+}
 
 function updateSSHlink() {
     var thisPageProtocol = window.location.protocol;
