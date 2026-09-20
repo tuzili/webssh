@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef7ff"/>
+      <stop offset="1" stop-color="#f8fbff"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#087ff5"/>
+      <stop offset="1" stop-color="#2d91ed"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#8fb9e8" flood-opacity=".28"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect x="110" y="45" width="1380" height="810" rx="12" fill="#fff" filter="url(#shadow)"/>
+  <path d="M110 57Q110 45 122 45H1478Q1490 45 1490 57V155H110Z" fill="url(#header)"/>
+  <circle cx="165" cy="99" r="27" fill="#fff"/>
+  <text x="155" y="110" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#087ff5">⌂</text>
+  <text x="215" y="92" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#fff">WebSSH 远程终端</text>
+  <text x="215" y="123" font-family="Arial, sans-serif" font-size="17" fill="#dceeff">通过浏览器轻松连接 SSH 服务器</text>
+
+  <g font-family="Arial, 'Microsoft YaHei', sans-serif" fill="#243b5a">
+    <text x="145" y="200" font-size="18" font-weight="700">服务器地址</text>
+    <text x="820" y="200" font-size="18" font-weight="700">端口</text>
+    <text x="145" y="295" font-size="18" font-weight="700">用户名</text>
+    <text x="820" y="295" font-size="18" font-weight="700">密码</text>
+    <text x="145" y="390" font-size="18" font-weight="700">私钥</text>
+    <text x="820" y="390" font-size="18" font-weight="700">私钥口令</text>
+    <text x="145" y="485" font-size="18" font-weight="700">双因素验证码（TOTP）</text>
+    <text x="820" y="485" font-size="18" font-weight="700">登录后执行命令</text>
+  </g>
+
+  <g fill="#fff" stroke="#cbd9e8" stroke-width="1.5">
+    <rect x="145" y="216" width="630" height="48" rx="6"/>
+    <rect x="820" y="216" width="630" height="48" rx="6"/>
+    <rect x="145" y="311" width="630" height="48" rx="6"/>
+    <rect x="820" y="311" width="630" height="48" rx="6"/>
+    <rect x="145" y="406" width="630" height="48" rx="6"/>
+    <rect x="820" y="406" width="630" height="48" rx="6"/>
+    <rect x="145" y="501" width="630" height="48" rx="6"/>
+    <rect x="820" y="501" width="630" height="48" rx="6"/>
+  </g>
+  <text x="835" y="247" font-family="Arial, sans-serif" font-size="17" fill="#61738a">22</text>
+  <rect x="158" y="418" width="96" height="30" rx="4" fill="#f7f7f7" stroke="#9aaabd"/>
+  <text x="174" y="439" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="15" fill="#26384d">选择文件</text>
+  <text x="270" y="439" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="15" fill="#70839a">未选择文件</text>
+
+  <rect x="145" y="575" width="160" height="48" rx="6" fill="#087ff5"/>
+  <text x="175" y="606" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700" fill="#fff">🔗 连接服务器</text>
+  <rect x="320" y="575" width="100" height="48" rx="6" fill="#e94b55"/>
+  <text x="349" y="606" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700" fill="#fff">↻ 重置</text>
+  <rect x="435" y="575" width="185" height="48" rx="6" fill="#17a6b8"/>
+  <text x="462" y="606" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700" fill="#fff">🔗 SSH 连接链接</text>
+
+  <rect x="145" y="644" width="1240" height="52" rx="6" fill="#f5f9fd" stroke="#c9dbea"/>
+  <text x="175" y="677" font-family="Arial, sans-serif" font-size="16" fill="#5e7894">https://ssh.jh7.net/?hostname=服务器地址&amp;port=22&amp;username=&amp;password=</text>
+  <rect x="1398" y="644" width="52" height="52" rx="6" fill="#087ff5"/>
+  <text x="1413" y="677" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="17" font-weight="700" fill="#fff">复制</text>
+
+  <line x1="145" y1="730" x2="1450" y2="730" stroke="#dce6f0"/>
+  <circle cx="800" cy="775" r="18" fill="#087ff5"/>
+  <text x="793" y="783" font-family="Arial, sans-serif" font-size="20" fill="#fff">⌂</text>
+  <text x="690" y="816" font-family="Arial, 'Microsoft YaHei', sans-serif" font-size="16" fill="#7287a1">点击 GitHub 图标访问项目主页</text>
+</svg>
