@@ -150,3 +150,15 @@ run.py
   ↓
 webssh.main
 ```
+
+## 致谢
+
+本项目基于原作者 **crazypeace/huashengdun-webssh** 的 WebSSH 项目进行整理和适配。
+
+特别感谢原作者 **crazypeace** 对 WebSSH 项目的开源贡献。
+
+原作者项目地址：
+
+https://github.com/crazypeace/huashengdun-webssh
+
+感谢原作者的开源工作！
