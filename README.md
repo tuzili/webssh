@@ -1,97 +1,119 @@
 # WebSSH — Serv00 专用版
 
-这是一个精简后的 WebSSH 版本，目标是直接部署到 Serv00。
+本仓库已精简为 **Serv00 部署专用版本**。
 
 ## 保留内容
 
-- WebSSH 核心程序
+- WebSSH 核心 SSH / WebSocket 终端
 - SSH 密码、公钥和 2FA 登录
-- WebSocket 终端
 - SSH Link 功能
-- Python 依赖
-- Serv00 启动脚本
+- Python 运行依赖
+- Serv00 启动脚本 `serv00_start.sh`
+
+## 已删除
+
+- Docker / docker-compose
+- Python 打包文件
+- 测试代码和测试密钥
+- 预览图片
+- UserScript
+- 其他非 Serv00 部署内容
 
 ## Serv00 部署
 
-### 1. 上传项目
+### 1. 克隆项目
 
-将仓库文件放到 Serv00 的应用目录，例如：
-
-```bash
-cd ~/domains/你的域名/public_python
-git clone https://github.com/tuzili/webssh.git .
-```
-
-如果已经上传项目，则直接进入项目目录。
-
-### 2. 安装依赖
-
-建议使用 Python 虚拟环境：
+进入你的 Serv00 应用目录：
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+git clone https://github.com/tuzili/webssh.git
+cd webssh
 ```
 
-### 3. 分配 Serv00 端口
+如果目录已经存在，直接进入项目目录即可。
 
-在 Serv00 中为 WebSSH 分配一个可用 TCP 端口，然后让网站反向代理到：
+### 2. 创建 Python 虚拟环境
+
+当前启动脚本使用：
 
 ```
-127.0.0.1:你的端口
+~/webssh-env/bin/python
 ```
 
-### 4. 启动 WebSSH
+创建并安装依赖：
 
 ```bash
-chmod +x start.sh
-./start.sh
+virtualenv -p python3.10 ~/webssh-env
+~/webssh-env/bin/pip install -r requirements.txt
 ```
 
-也可以直接运行：
+### 3. 配置 Serv00 端口
+
+编辑 `serv00_start.sh`：
 
 ```bash
-python3 run.py --address=127.0.0.1 --port=你的端口 --policy=warning --xheaders=True --fbidhttp=False
+PORT="30000"
 ```
 
-如果设置了环境变量 `PORT`，`start.sh` 会优先使用该端口；否则默认使用 `8080`。
+把 `30000` 改成你在 Serv00 中实际分配给 WebSSH 的 TCP 端口。
 
-### 5. 网站反向代理
-
-将 Serv00 网站的反向代理目标设置为：
+WebSSH 监听：
 
 ```
-http://127.0.0.1:你的端口
+127.0.0.1:30000
 ```
 
-WebSSH 使用 WebSocket，代理配置必须允许 WebSocket Upgrade。
+### 4. 启动
+
+```bash
+chmod +x serv00_start.sh
+./serv00_start.sh
+```
+
+启动脚本会：
+
+- 后台运行 WebSSH
+- 写入 `webssh.pid`
+- 输出日志到 `webssh.log`
+- 防止重复启动
+
+### 5. Serv00 网站反向代理
+
+将你的 Serv00 网站反向代理到：
+
+```
+http://127.0.0.1:30000
+```
+
+其中 `30000` 必须替换成你自己的端口。
+
+由于 WebSSH 使用 WebSocket，反向代理需要支持 WebSocket Upgrade。
 
 ### 6. HTTPS
 
-建议使用 Serv00 网站提供的 HTTPS 访问 WebSSH，不需要在 WebSSH 进程中额外配置证书。
+建议通过 Serv00 网站的 HTTPS 域名访问 WebSSH。
+
+不需要在 WebSSH 进程中配置 `cert.crt` / `cert.key`。
 
 ## SSH Link
 
-项目保留了 SSH Link 功能。登录页面可以生成带参数的 SSH Link，方便以后直接打开。
+登录页面保留了 SSH Link 功能，可以生成方便收藏的连接地址。
 
-## 安全提示
+## 安全
 
-- 不要把 SSH 私钥、密码、TLS 私钥或测试密钥提交到 GitHub。
-- 生产环境建议使用 HTTPS。
-- 如果使用 `--policy=reject`，请提前准备可信的 `known_hosts`。
-- 不要为了省事关闭 SSH 主机密钥校验。
+- 不要把 SSH 私钥、密码、TLS 私钥提交到 GitHub。
+- 不要把测试密钥上传到生产仓库。
+- 公网访问建议使用 HTTPS。
+- 生产环境可以考虑使用 `--policy=reject` 并配置可信 `known_hosts`。
 
-## 启动脚本
+## 运行文件
 
-`start.sh` 默认监听：
+Serv00 实际运行入口：
 
 ```
-127.0.0.1:8080
-```
-
-可以通过环境变量修改：
-
-```bash
-PORT=你的Serv00端口 ./start.sh
+serv00_start.sh
+  ↓
+run.py
+  ↓
+webssh.main
 ```
