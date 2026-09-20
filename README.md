@@ -2,6 +2,12 @@
 
 本仓库已精简为 **Serv00 部署专用版本**。
 
+## UI 效果
+
+![WebSSH UI 效果图](docs/ui-preview.svg)
+
+当前界面为简体中文，顶部显示 **WebSSH 远程终端**，GitHub 图标位于标题左侧；生成 SSH Link 后，可直接点击右侧 **复制** 按钮复制连接地址。
+
 ## 保留内容
 
 - WebSSH 核心 SSH / WebSocket 终端
