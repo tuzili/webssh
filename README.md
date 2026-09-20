@@ -1,187 +1,97 @@
-# WebSSH · Serv00 专用版
+# WebSSH — Serv00 专用版
 
-这是一个精简后的 WebSSH 版本，仅保留 **Serv00 部署所需内容**。
+这是一个精简后的 WebSSH 版本，目标是直接部署到 Serv00。
 
-核心功能保留：
-- 浏览器 SSH 终端
-- 密码 / 私钥 / 2FA 登录
-- WebSocket 实时终端
-- SSH Link
-- 登录后执行命令
-- UTF-8 默认编码
+## 保留内容
+
+- WebSSH 核心程序
+- SSH 密码、公钥和 2FA 登录
+- WebSocket 终端
+- SSH Link 功能
+- Python 依赖
+- Serv00 启动脚本
 
 ## Serv00 部署
 
-WebSSH 使用 Tornado + WebSocket，因此在 Serv00 上建议采用：
+### 1. 上传项目
 
-**WebSSH → 本机保留端口 → Serv00 Proxy 网站**
-
-Serv00 官方文档说明 Proxy 页面支持 WebSocket；端口需要先预留。 citeturn6search0turn6search4
-
-### 1. 开启 Binexec
-
-SSH 登录 Serv00 后执行：
+将仓库文件放到 Serv00 的应用目录，例如：
 
 ```bash
-devil binexec on
+cd ~/domains/你的域名/public_python
+git clone https://github.com/tuzili/webssh.git .
 ```
 
-执行后重新登录 SSH。 citeturn15search9
+如果已经上传项目，则直接进入项目目录。
 
-### 2. 预留 TCP 端口
+### 2. 安装依赖
 
-例如使用 `30000`：
-
-```bash
-devil port add 30000 TCP webssh
-devil port list
-```
-
-Serv00 当前允许预留的端口范围为 1024–64000。 citeturn6search0
-
-### 3. 创建 Python 虚拟环境
+建议使用 Python 虚拟环境：
 
 ```bash
-virtualenv -p python3.10 ~/webssh-env
-source ~/webssh-env/bin/activate
-cd ~/webssh
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Serv00 当前提供 Python 3.10，并支持通过 virtualenv 安装独立依赖。 citeturn0search1
+### 3. 分配 Serv00 端口
+
+在 Serv00 中为 WebSSH 分配一个可用 TCP 端口，然后让网站反向代理到：
+
+```
+127.0.0.1:你的端口
+```
 
 ### 4. 启动 WebSSH
 
-把下面的 `30000` 改成你实际预留的端口：
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+也可以直接运行：
 
 ```bash
-cd ~/webssh
-source ~/webssh-env/bin/activate
-
-python run.py \
-  --address=127.0.0.1 \
-  --port=30000 \
-  --xheaders=True \
-  --policy=warning \
-  --wpintvl=30
+python3 run.py --address=127.0.0.1 --port=你的端口 --policy=warning --xheaders=True --fbidhttp=False
 ```
 
-如果需要后台运行：
+如果设置了环境变量 `PORT`，`start.sh` 会优先使用该端口；否则默认使用 `8080`。
 
-```bash
-nohup ~/webssh-env/bin/python ~/webssh/run.py \
-  --address=127.0.0.1 \
-  --port=30000 \
-  --xheaders=True \
-  --policy=warning \
-  --wpintvl=30 \
-  > ~/webssh.log 2>&1 &
-```
+### 5. 网站反向代理
 
-### 5. 添加 Serv00 Proxy
-
-在 DevilWEB：
-
-**WWW Websites → Add → Advanced settings → Proxy**
-
-将 Proxy 指向：
+将 Serv00 网站的反向代理目标设置为：
 
 ```
-localhost:30000
+http://127.0.0.1:你的端口
 ```
 
-也可以使用命令：
-
-```bash
-devil www add YOUR-DOMAIN proxy localhost 30000
-```
-
-Serv00 的 Proxy 页面支持 WebSocket，因此适合 WebSSH 的终端连接。 citeturn6search4
+WebSSH 使用 WebSocket，代理配置必须允许 WebSocket Upgrade。
 
 ### 6. HTTPS
 
-建议给域名启用 SSL / 强制 HTTPS。
-
-浏览器访问：
-
-```
-https://YOUR-DOMAIN/
-```
-
-### 7. 设置开机自动启动
-
-Serv00 支持 Cron 的 `@reboot`：
-
-```bash
-crontab -e
-```
-
-加入：
-
-```cron
-@reboot /usr/local/bin/bash /home/YOUR-LOGIN/webssh/serv00_start.sh >> /home/YOUR-LOGIN/webssh/serv00.log 2>&1
-```
-
-Serv00 官方 Cron 文档确认支持 `@reboot`。 citeturn15search0
-
-## 使用启动脚本
-
-本仓库提供：
-
-```
-serv00_start.sh
-```
-
-首次使用前修改脚本顶部的：
-
-```bash
-PORT="30000"
-```
-
-然后：
-
-```bash
-chmod +x serv00_start.sh
-./serv00_start.sh
-```
+建议使用 Serv00 网站提供的 HTTPS 访问 WebSSH，不需要在 WebSSH 进程中额外配置证书。
 
 ## SSH Link
 
-页面中的 **SSH Link** 可以生成带有：
+项目保留了 SSH Link 功能。登录页面可以生成带参数的 SSH Link，方便以后直接打开。
 
-- SSH 主机
-- SSH 端口
-- 用户名
-- Base64 密码
-- 登录后执行命令
+## 安全提示
 
-的链接，方便保存到浏览器书签。
+- 不要把 SSH 私钥、密码、TLS 私钥或测试密钥提交到 GitHub。
+- 生产环境建议使用 HTTPS。
+- 如果使用 `--policy=reject`，请提前准备可信的 `known_hosts`。
+- 不要为了省事关闭 SSH 主机密钥校验。
 
-**注意：SSH Link 本身包含登录密码信息，不要公开分享。**
+## 启动脚本
 
-## 项目结构
-
-精简后主要保留：
+`start.sh` 默认监听：
 
 ```
-webssh/
-├── webssh/              # WebSSH 核心程序
-├── requirements.txt     # Python 依赖
-├── run.py               # 启动入口
-├── serv00_start.sh      # Serv00 启动脚本
-├── README.md            # Serv00 部署说明
-├── LICENSE
-└── .gitignore
+127.0.0.1:8080
 ```
 
-不会保留 Docker、docker-compose、测试、预览图片、油猴脚本及其它平台部署文件。
-
-## 日志
-
-后台运行时查看：
+可以通过环境变量修改：
 
 ```bash
-tail -f ~/webssh.log
+PORT=你的Serv00端口 ./start.sh
 ```
-
-Serv00 网站本身的错误日志位于对应域名的 `logs/error.log`。 citeturn0search1
