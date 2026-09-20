@@ -43,31 +43,31 @@
       <form id="connect" action="" method="post" enctype="multipart/form-data"{% if debug %} novalidate{% end %}>
         <div class="row">
           <div class="col">
-            <label for="服务器地址">Hostname</label>
+            <label for="hostname">服务器地址</label>
             <input class="form-control" type="text" id="hostname" name="hostname" value="" required>
           </div>
           <div class="col">
-            <label for="端口">Port</label>
+            <label for="port">端口</label>
             <input class="form-control" type="number" id="port" name="port" placeholder="22" value="" min=1 max=65535>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <label for="用户名">Username</label>
+            <label for="username">用户名</label>
             <input class="form-control" type="text" id="username" name="username" placeholder="root" value="" required>
           </div>
           <div class="col">
-            <label for="密码">Password</label>
+            <label for="password">密码</label>
             <input class="form-control" type="password" id="password" name="password" value="">
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <label for="Username">私钥</label>
+            <label for="privatekey">私钥</label>
             <input class="form-control" type="file" id="privatekey" name="privatekey" value="">
           </div>
           <div class="col">
-            <label for="私钥口令">Passphrase</label>
+            <label for="passphrase">私钥口令</label>
             <input class="form-control" type="password" id="passphrase" name="passphrase" value="">
           </div>
         </div>
@@ -87,8 +87,13 @@
         <button type="reset" class="btn btn-danger">重置</button>
         <button type="button" class="btn btn-info" id="sshlinkBtn">SSH 连接链接</button>
         <div id="sshlink"></div>
-        <div>项目地址： <a href="https://github.com/crazypeace/huashengdun-webssh">https://github.com/crazypeace/huashengdun-webssh</a></div>
-        <div>部署教程： <a href="https://zelikk.blogspot.com/search/label/webssh">https://zelikk.blogspot.com/search/label/webssh</a></div>
+        <div style="margin-top: 15px; text-align: center;">
+          <a href="https://github.com/tuzili/webssh" target="_blank" rel="noopener noreferrer" aria-label="GitHub 项目" title="GitHub 项目">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.27 5.69.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .31.21.68.8.56A11.52 11.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+            </svg>
+          </a>
+        </div>
       </form>
     </div>
 
