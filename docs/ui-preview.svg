@@ -7,7 +7,7 @@
 <rect x="105" y="555" width="125" height="42" rx="5" fill="#0d6efd"/><text x="130" y="582" font-family="Arial, sans-serif" font-size="15" fill="#fff">连接服务器</text>
 <rect x="240" y="555" width="75" height="42" rx="5" fill="#dc3545"/><text x="260" y="582" font-family="Arial, sans-serif" font-size="15" fill="#fff">重置</text>
 <rect x="325" y="555" width="135" height="42" rx="5" fill="#17a2b8"/><text x="345" y="582" font-family="Arial, sans-serif" font-size="15" fill="#fff">SSH 连接链接</text>
-<rect x="105" y="615" width="890" height="44" rx="5" fill="#f8f9fa" stroke="#ced4da"/><text x="120" y="643" font-family="Arial, sans-serif" font-size="13" fill="#495057">https://ssh.jh7.net/?hostname=panel10.serv00.com&amp;port=22&amp;username=kakakj...</text>
+<rect x="105" y="615" width="890" height="44" rx="5" fill="#f8f9fa" stroke="#ced4da"/><text x="120" y="643" font-family="Arial, sans-serif" font-size="13" fill="#495057">https://ssh.jh7.net/?hostname=panel10.serv00.com&amp;port=22&amp;username=...</text>
 <rect x="1005" y="615" width="90" height="44" rx="5" fill="#0d6efd"/><text x="1030" y="643" font-family="Arial, sans-serif" font-size="15" fill="#fff">复制</text>
 <text x="105" y="690" font-family="Arial, sans-serif" font-size="13" fill="#6c757d">GitHub 图标位于标题左侧，SSH Link 旁提供一键复制按钮。</text>
 </svg>
