@@ -2,6 +2,12 @@
 
 本仓库已精简为 **Serv00 部署专用版本**。
 
+## 界面效果
+
+![WebSSH 远程终端效果图](docs/ui-preview.svg)
+
+WebSSH 提供简洁的中文 SSH Web 管理界面，可通过浏览器填写服务器地址、端口、用户名、密码、私钥、TOTP 和登录后执行命令，并生成 SSH 连接链接。
+
 ## 保留内容
 
 - WebSSH 核心 SSH / WebSocket 终端
@@ -15,8 +21,6 @@
 - Docker / docker-compose
 - Python 打包文件
 - 测试代码和测试密钥
-- 预览图片
-- UserScript
 - 其他非 Serv00 部署内容
 
 ## Serv00 部署
